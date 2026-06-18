@@ -79,19 +79,7 @@ export function SiteHeader() {
               {loading ? (
                 <div className="size-8 animate-pulse rounded-full bg-foreground/10" />
               ) : user ? (
-                <>
-                  <Button
-                    size="sm"
-                    asChild
-                    className="gap-1.5 rounded-full border-0 bg-foreground/[0.06] text-foreground hover:bg-foreground/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-                  >
-                    <Link href="/dashboard/cars/new">
-                      <Plus className="size-4" />
-                      <span className="hidden lg:inline">Машинаа нэмэх</span>
-                    </Link>
-                  </Button>
-                  <UserMenu />
-                </>
+                <UserMenu />
               ) : (
                 <>
                   <Link

@@ -11,6 +11,14 @@ import { toPublicUser } from "./user.mapper";
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async setAvatar(userId: string, url: string) {
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: { avatarUrl: url },
+    });
+    return toPublicUser(user);
+  }
+
   async updateProfile(userId: string, input: UpdateProfileInput) {
     const data: Record<string, string | null> = {};
     if (input.name !== undefined) data.name = input.name;

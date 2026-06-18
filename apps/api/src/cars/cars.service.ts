@@ -44,7 +44,23 @@ export class CarsService {
     return new Map(grouped.map((g) => [g.carId, g._count._all]));
   }
 
-  private mapCar(car: CarWithRelations, tripCount: number): CarDto {
+  private async carCountsByOwner(
+    ownerIds: string[],
+  ): Promise<Map<string, number>> {
+    if (ownerIds.length === 0) return new Map();
+    const grouped = await this.prisma.car.groupBy({
+      by: ["ownerId"],
+      where: { ownerId: { in: ownerIds } },
+      _count: { _all: true },
+    });
+    return new Map(grouped.map((g) => [g.ownerId, g._count._all]));
+  }
+
+  private mapCar(
+    car: CarWithRelations,
+    tripCount: number,
+    ownerCarCount: number,
+  ): CarDto {
     return {
       id: car.id,
       brand: car.brand,
@@ -73,6 +89,7 @@ export class CarsService {
         name: car.owner.name,
         avatarUrl: car.owner.avatarUrl,
         tripCount,
+        carCount: ownerCarCount,
       },
       createdAt: car.createdAt.toISOString(),
     };
@@ -145,8 +162,11 @@ export class CarsService {
     ]);
 
     const trips = await this.tripCountsByCar(rows.map((c) => c.id));
+    const owners = await this.carCountsByOwner(rows.map((c) => c.ownerId));
     return {
-      items: rows.map((c) => this.mapCar(c, trips.get(c.id) ?? 0)),
+      items: rows.map((c) =>
+        this.mapCar(c, trips.get(c.id) ?? 0, owners.get(c.ownerId) ?? 0),
+      ),
       total,
       page: query.page,
       pageSize: query.pageSize,
@@ -177,7 +197,8 @@ export class CarsService {
     });
     if (!car) throw new NotFoundException("Машин олдсонгүй");
     const trips = await this.tripCountsByCar([car.id]);
-    return this.mapCar(car, trips.get(car.id) ?? 0);
+    const owners = await this.carCountsByOwner([car.ownerId]);
+    return this.mapCar(car, trips.get(car.id) ?? 0, owners.get(car.ownerId) ?? 0);
   }
 
   // ---- owner ----
@@ -188,7 +209,10 @@ export class CarsService {
       orderBy: { createdAt: "desc" },
     });
     const trips = await this.tripCountsByCar(rows.map((c) => c.id));
-    return rows.map((c) => this.mapCar(c, trips.get(c.id) ?? 0));
+    const owners = await this.carCountsByOwner(rows.map((c) => c.ownerId));
+    return rows.map((c) =>
+      this.mapCar(c, trips.get(c.id) ?? 0, owners.get(c.ownerId) ?? 0),
+    );
   }
 
   async create(ownerId: string, input: CarInput): Promise<CarDto> {
@@ -212,7 +236,8 @@ export class CarsService {
       },
       include: this.includeRelations,
     });
-    return this.mapCar(car, 0);
+    const ownerCount = await this.prisma.car.count({ where: { ownerId } });
+    return this.mapCar(car, 0, ownerCount);
   }
 
   private async assertOwnership(carId: string, ownerId: string) {
@@ -241,7 +266,8 @@ export class CarsService {
       include: this.includeRelations,
     });
     const trips = await this.tripCountsByCar([car.id]);
-    return this.mapCar(car, trips.get(car.id) ?? 0);
+    const owners = await this.carCountsByOwner([car.ownerId]);
+    return this.mapCar(car, trips.get(car.id) ?? 0, owners.get(car.ownerId) ?? 0);
   }
 
   async remove(ownerId: string, carId: string): Promise<{ ok: true }> {

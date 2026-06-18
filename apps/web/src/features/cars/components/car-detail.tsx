@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BookingCard } from "./booking-card";
 import { CarGallery } from "./car-gallery";
 import { carsApi } from "../api";
@@ -154,16 +154,18 @@ export function CarDetail({ id }: { id: string }) {
           <h2 className="text-lg font-semibold">Машины эзэн</h2>
           <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-card p-4">
             <Avatar className="size-12">
-              <AvatarFallback className="bg-primary text-primary-foreground">
+              <AvatarImage
+                src={car.owner.avatarUrl ?? undefined}
+                alt={car.owner.name}
+              />
+              <AvatarFallback className="bg-gradient-to-br from-brand to-orange-600 font-semibold text-white">
                 {car.owner.name.slice(0, 1)}
               </AvatarFallback>
             </Avatar>
             <div>
               <p className="font-medium">{car.owner.name}</p>
               <p className="text-sm text-muted-foreground">
-                {car.owner.tripCount > 0
-                  ? `Баталгаажсан эзэн · ${car.owner.tripCount}+ аялал`
-                  : "Шинэ эзэн"}
+                {car.owner.carCount} машин
               </p>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { SearchBar } from "./search-bar";
 
 export function Hero() {
   return (
-    <section className="relative isolate mt-[-76px] flex min-h-[680px] flex-col justify-end overflow-hidden border-b border-border sm:min-h-[740px] lg:min-h-[800px]">
+    <section className="relative isolate mt-[-76px] flex min-h-[80svh] flex-col justify-end overflow-hidden border-b border-border">
       {/* Cover зураг */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

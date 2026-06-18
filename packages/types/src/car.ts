@@ -82,6 +82,7 @@ export interface CarOwnerDto {
   name: string;
   avatarUrl: string | null;
   tripCount: number;
+  carCount: number;
 }
 
 export interface CarDto {
