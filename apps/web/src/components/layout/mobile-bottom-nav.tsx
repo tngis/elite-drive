@@ -2,18 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Car, Warehouse, CalendarCheck, User } from "lucide-react";
+import { User } from "lucide-react";
 import { LiquidGlass } from "@/components/shared/liquid-glass";
 import { useAuth } from "@/features/auth/auth-context";
+import { mainNav } from "./nav-config";
 import { cn } from "@/lib/utils";
 
 // Утсан дээрх хөвдөг шилэн bottom navbar (Instagram маягийн).
+// Үндсэн зүйлс header-тэй ижил mainNav-аас гарна.
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string, exact = false) =>
+    exact || href === "/" ? pathname === href : pathname.startsWith(href);
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
@@ -25,25 +27,15 @@ export function MobileBottomNav() {
         className="w-full max-w-sm"
         contentClassName="flex items-center gap-1 p-1"
       >
-        <NavItem href="/" icon={Home} label="Нүүр" active={isActive("/")} />
-        <NavItem
-          href="/cars"
-          icon={Car}
-          label="Хайх"
-          active={isActive("/cars")}
-        />
-        <NavItem
-          href="/dashboard/cars"
-          icon={Warehouse}
-          label="Миний гараж"
-          active={isActive("/dashboard/cars")}
-        />
-        <NavItem
-          href="/bookings"
-          icon={CalendarCheck}
-          label="Захиалга"
-          active={isActive("/bookings")}
-        />
+        {mainNav.map((item) => (
+          <NavItem
+            key={item.href}
+            href={item.href}
+            icon={item.icon}
+            label={item.label}
+            active={isActive(item.href, item.exact)}
+          />
+        ))}
         <NavItem
           href={user ? "/profile" : "/login"}
           icon={User}
