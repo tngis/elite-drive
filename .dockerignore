@@ -1,0 +1,11 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+apps/api/uploads
+**/*.tsbuildinfo
+**/.env
+**/.env.local
+npm-debug.log*
+.DS_Store

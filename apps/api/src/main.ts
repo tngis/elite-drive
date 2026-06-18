@@ -9,8 +9,14 @@ import { AppModule } from "./app.module";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Proxy (Vercel/Railway https) ард secure cookie зөв ажиллахын тулд
+  app.set("trust proxy", 1);
+
   const webOrigin = process.env.WEB_ORIGIN ?? "http://localhost:3000";
-  app.enableCors({ origin: webOrigin.split(","), credentials: true });
+  app.enableCors({
+    origin: webOrigin.split(",").map((o) => o.trim()),
+    credentials: true,
+  });
   app.use(cookieParser());
   app.setGlobalPrefix("api");
 

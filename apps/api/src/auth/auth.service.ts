@@ -93,10 +93,12 @@ export class AuthService {
       data: { tokenHash: this.hashToken(refreshToken), userId, expiresAt },
     });
 
+    // Production-д web/api өөр домэйнд байвал cross-site cookie шаардлагатай
+    const isProd = process.env.NODE_ENV === "production";
     res.cookie(REFRESH_COOKIE, refreshToken, {
       httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd,
       path: "/api/auth",
       maxAge: refreshDays * 86_400_000,
     });
@@ -139,7 +141,12 @@ export class AuthService {
         data: { revokedAt: new Date() },
       });
     }
-    res.clearCookie(REFRESH_COOKIE, { path: "/api/auth" });
+    const isProd = process.env.NODE_ENV === "production";
+    res.clearCookie(REFRESH_COOKIE, {
+      path: "/api/auth",
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd,
+    });
   }
 
   async me(userId: string): Promise<AuthResponse["user"]> {
