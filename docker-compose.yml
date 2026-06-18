@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: elite-drive-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: elite
+      POSTGRES_PASSWORD: elite
+      POSTGRES_DB: elite_drive
+    ports:
+      - "5433:5432"
+    volumes:
+      - elite_drive_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U elite -d elite_drive"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  elite_drive_pg:

@@ -1,0 +1,96 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Home, Car, Warehouse, CalendarCheck, User } from "lucide-react";
+import { LiquidGlass } from "@/components/shared/liquid-glass";
+import { useAuth } from "@/features/auth/auth-context";
+import { cn } from "@/lib/utils";
+
+// Утсан дээрх хөвдөг шилэн bottom navbar (Instagram маягийн).
+export function MobileBottomNav() {
+  const pathname = usePathname();
+  const { user } = useAuth();
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
+      <LiquidGlass
+        radius={32}
+        bevel={14}
+        scale={20}
+        blur={9}
+        className="w-full max-w-sm"
+        contentClassName="flex items-center gap-1 p-1"
+      >
+        <NavItem href="/" icon={Home} label="Нүүр" active={isActive("/")} />
+        <NavItem
+          href="/cars"
+          icon={Car}
+          label="Хайх"
+          active={isActive("/cars")}
+        />
+        <NavItem
+          href="/dashboard/cars"
+          icon={Warehouse}
+          label="Миний машинууд"
+          active={isActive("/dashboard/cars")}
+        />
+        <NavItem
+          href="/bookings"
+          icon={CalendarCheck}
+          label="Захиалга"
+          active={isActive("/bookings")}
+        />
+        <NavItem
+          href={user ? "/profile" : "/login"}
+          icon={User}
+          label="Профайл"
+          active={isActive("/profile")}
+          avatar={user ? user.name.slice(0, 1).toUpperCase() : undefined}
+        />
+      </LiquidGlass>
+    </div>
+  );
+}
+
+function NavItem({
+  href,
+  icon: Icon,
+  label,
+  active,
+  avatar,
+}: {
+  href: string;
+  icon: React.ElementType;
+  label: string;
+  active: boolean;
+  avatar?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className="flex flex-1 items-center justify-center"
+    >
+      <span
+        className={cn(
+          "flex h-11 w-full items-center justify-center rounded-full transition-colors",
+          active
+            ? "bg-foreground/10 text-foreground"
+            : "text-foreground/45 hover:text-foreground",
+        )}
+      >
+        {avatar ? (
+          <span className="grid size-7 place-items-center rounded-full bg-linear-to-br from-brand to-orange-600 text-xs font-semibold text-white">
+            {avatar}
+          </span>
+        ) : (
+          <Icon className="size-6" />
+        )}
+      </span>
+    </Link>
+  );
+}

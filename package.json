@@ -1,0 +1,22 @@
+{
+  "name": "elite-drive",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.0.9",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "pnpm --filter @elite-drive/web dev",
+    "dev:api": "pnpm --filter @elite-drive/api start:dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @elite-drive/api prisma:migrate",
+    "db:seed": "pnpm --filter @elite-drive/api prisma:seed",
+    "db:studio": "pnpm --filter @elite-drive/api prisma:studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}
