@@ -109,22 +109,24 @@ export function BookingCard({ car }: { car: Car }) {
       <Separator className="my-4" />
 
       <div className="grid grid-cols-2 gap-3">
-        <div>
+        <div className="min-w-0">
           <Label className="text-xs text-muted-foreground">Авах</Label>
           <Input
             type="date"
             min={today}
             value={from}
             onChange={(e) => setFrom(e.target.value)}
+            className="w-full min-w-0"
           />
         </div>
-        <div>
+        <div className="min-w-0">
           <Label className="text-xs text-muted-foreground">Буцаах</Label>
           <Input
             type="date"
             min={from || today}
             value={to}
             onChange={(e) => setTo(e.target.value)}
+            className="w-full min-w-0"
           />
         </div>
       </div>

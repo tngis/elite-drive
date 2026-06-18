@@ -76,7 +76,7 @@ export function CarDetail({ id }: { id: string }) {
       </Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_380px]">
-        <div>
+        <div className="min-w-0">
           <CarGallery car={car} />
 
           <div className="mt-6">
@@ -169,7 +169,7 @@ export function CarDetail({ id }: { id: string }) {
           </div>
         </div>
 
-        <aside>
+        <aside className="min-w-0">
           <div className="lg:sticky lg:top-20">
             <BookingCard car={car} />
           </div>

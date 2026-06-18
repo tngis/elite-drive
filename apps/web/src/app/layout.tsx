@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Manrope, Unbounded } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
+import { ConditionalFooter } from "@/components/layout/conditional-footer";
+import { BottomNavSpacer } from "@/components/layout/bottom-nav-spacer";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { Providers } from "./providers";
 
@@ -44,7 +45,9 @@ export default function RootLayout({
         <Providers>
           <SiteHeader />
           <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <ConditionalFooter />
+          {/* Footer-гүй хуудсуудад мобайл bottom navbar-ын зай */}
+          <BottomNavSpacer />
           <MobileBottomNav />
         </Providers>
       </body>
