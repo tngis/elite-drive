@@ -35,7 +35,7 @@ export function MobileBottomNav() {
         <NavItem
           href="/dashboard/cars"
           icon={Warehouse}
-          label="Миний машинууд"
+          label="Миний гараж"
           active={isActive("/dashboard/cars")}
         />
         <NavItem
@@ -50,6 +50,7 @@ export function MobileBottomNav() {
           label="Профайл"
           active={isActive("/profile")}
           avatar={user ? user.name.slice(0, 1).toUpperCase() : undefined}
+          avatarUrl={user?.avatarUrl}
         />
       </LiquidGlass>
     </div>
@@ -62,12 +63,14 @@ function NavItem({
   label,
   active,
   avatar,
+  avatarUrl,
 }: {
   href: string;
   icon: React.ElementType;
   label: string;
   active: boolean;
   avatar?: string;
+  avatarUrl?: string | null;
 }) {
   return (
     <Link
@@ -83,7 +86,17 @@ function NavItem({
             : "text-foreground/45 hover:text-foreground",
         )}
       >
-        {avatar ? (
+        {avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={avatarUrl}
+            alt={label}
+            className={cn(
+              "size-7 rounded-full object-cover",
+              active && "ring-2 ring-foreground/30",
+            )}
+          />
+        ) : avatar ? (
           <span className="grid size-7 place-items-center rounded-full bg-linear-to-br from-brand to-orange-600 text-xs font-semibold text-white">
             {avatar}
           </span>

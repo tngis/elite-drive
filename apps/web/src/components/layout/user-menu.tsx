@@ -15,7 +15,7 @@ import { useAuth } from "@/features/auth/auth-context";
 
 const links = [
   { href: "/bookings", label: "Миний захиалга", icon: CalendarCheck },
-  { href: "/dashboard/cars", label: "Миний машинууд", icon: Car },
+  { href: "/dashboard/cars", label: "Миний гараж", icon: Car },
   { href: "/dashboard/bookings", label: "Ирсэн хүсэлтүүд", icon: CalendarCheck },
   { href: "/profile", label: "Профайл", icon: UserIcon },
 ];

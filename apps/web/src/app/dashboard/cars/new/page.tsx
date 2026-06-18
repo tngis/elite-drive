@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 import type { CarInput } from "@elite-drive/types";
 import { RequireAuth } from "@/features/auth/components/require-auth";
 import { CarForm } from "@/features/cars/components/car-form";
@@ -19,6 +20,7 @@ export default function NewCarPage() {
       await carsApi.uploadImages(car.id, images);
     }
     qc.invalidateQueries({ queryKey: ["cars"] });
+    toast.success("Машин нэмэгдлээ");
     router.push("/dashboard/cars");
   }
 
@@ -30,7 +32,7 @@ export default function NewCarPage() {
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          Миний машинууд
+          Миний гараж
         </Link>
         <h1 className="mt-4 text-2xl font-semibold tracking-tight">
           Шинэ машин нэмэх

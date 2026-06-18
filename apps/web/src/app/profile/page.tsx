@@ -15,6 +15,7 @@ import {
   Pencil,
   Camera,
 } from "lucide-react";
+import { toast } from "sonner";
 import type { PublicUser } from "@elite-drive/types";
 import { RequireAuth } from "@/features/auth/components/require-auth";
 import { useAuth } from "@/features/auth/auth-context";
@@ -26,7 +27,7 @@ import { api, ApiError } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
 
 const quickLinks = [
-  { href: "/dashboard/cars", label: "Миний машинууд", icon: Car },
+  { href: "/dashboard/cars", label: "Миний гараж", icon: Car },
   { href: "/bookings", label: "Миний захиалга", icon: CalendarCheck },
   { href: "/dashboard/bookings", label: "Ирсэн хүсэлтүүд", icon: CalendarCheck },
 ];
@@ -76,8 +77,11 @@ function ProfileView() {
       form.append("file", file);
       const updated = await api.upload<PublicUser>("/users/me/avatar", form);
       setUser(updated);
+      toast.success("Профайл зураг солигдлоо");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Зураг оруулахад алдаа");
+      const msg = err instanceof ApiError ? err.message : "Зураг оруулахад алдаа";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setUploadingAvatar(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -97,8 +101,11 @@ function ProfileView() {
       setUser(updated);
       setSaved(true);
       setEditing(false);
+      toast.success("Хадгалагдлаа");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Хадгалахад алдаа гарлаа");
+      const msg = err instanceof ApiError ? err.message : "Хадгалахад алдаа гарлаа";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }

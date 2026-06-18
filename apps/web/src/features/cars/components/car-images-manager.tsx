@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import type { CarDto } from "@elite-drive/types";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { carsApi } from "../api";
 import { ApiError } from "@/lib/api-client";
@@ -25,8 +26,11 @@ export function CarImagesManager({ car }: { car: CarDto }) {
     try {
       await carsApi.uploadImages(car.id, Array.from(files));
       await refresh();
+      toast.success("Зураг орлоо");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Зураг оруулахад алдаа");
+      const msg = err instanceof ApiError ? err.message : "Зураг оруулахад алдаа";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -37,8 +41,10 @@ export function CarImagesManager({ car }: { car: CarDto }) {
     try {
       await carsApi.deleteImage(car.id, imageId);
       await refresh();
+      toast.success("Зураг устгагдлаа");
     } catch {
       setError("Зураг устгахад алдаа гарлаа");
+      toast.error("Зураг устгахад алдаа гарлаа");
     }
   }
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import type { CarInput } from "@elite-drive/types";
 import { Separator } from "@/components/ui/separator";
 import { carsApi } from "../api";
@@ -33,7 +34,7 @@ export function EditCarView({ id }: { id: string }) {
       <div className="mx-auto max-w-md px-4 py-24 text-center">
         <h1 className="text-xl font-semibold">Машин олдсонгүй</h1>
         <Link href="/dashboard/cars" className="mt-4 inline-block text-sm text-brand-foreground hover:underline">
-          Миний машинууд руу буцах
+          Миний гараж руу буцах
         </Link>
       </div>
     );
@@ -42,6 +43,7 @@ export function EditCarView({ id }: { id: string }) {
   async function handleUpdate(data: CarInput) {
     await carsApi.update(id, data);
     await qc.invalidateQueries({ queryKey: ["cars"] });
+    toast.success("Хадгалагдлаа");
     router.push("/dashboard/cars");
   }
 
@@ -52,7 +54,7 @@ export function EditCarView({ id }: { id: string }) {
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-4" />
-        Миний машинууд
+        Миний гараж
       </Link>
       <h1 className="mt-4 text-2xl font-semibold tracking-tight">
         {car.brand} {car.name}

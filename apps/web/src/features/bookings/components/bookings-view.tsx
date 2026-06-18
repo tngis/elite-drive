@@ -7,12 +7,31 @@ import {
   paymentMethodLabels,
   type BookingDto,
 } from "@elite-drive/types";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/features/cars/data";
 import { bookingsApi } from "../api";
 import { StatusBadge } from "./status-badge";
+import { ApiError } from "@/lib/api-client";
 
 type Perspective = "renter" | "owner";
+
+type BookingAction =
+  | "approve"
+  | "reject"
+  | "cancel"
+  | "start"
+  | "complete"
+  | "markPaid";
+
+const actionToast: Record<BookingAction, string> = {
+  approve: "Захиалга зөвшөөрөгдлөө",
+  reject: "Захиалга татгалзлаа",
+  cancel: "Захиалга цуцлагдлаа",
+  start: "Машин хүлээлгэн өглөө",
+  complete: "Захиалга дууслаа",
+  markPaid: "Төлбөр баталгаажлаа",
+};
 
 export function BookingsView({ perspective }: { perspective: Perspective }) {
   const qc = useQueryClient();
@@ -27,13 +46,7 @@ export function BookingsView({ perspective }: { perspective: Perspective }) {
   });
 
   const mutation = useMutation({
-    mutationFn: ({
-      action,
-      id,
-    }: {
-      action: "approve" | "reject" | "cancel" | "start" | "complete" | "markPaid";
-      id: string;
-    }) => {
+    mutationFn: ({ action, id }: { action: BookingAction; id: string }) => {
       switch (action) {
         case "approve":
           return bookingsApi.approve(id);
@@ -49,9 +62,12 @@ export function BookingsView({ perspective }: { perspective: Perspective }) {
           return bookingsApi.markPaid(id);
       }
     },
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey });
+      toast.success(actionToast[variables.action]);
     },
+    onError: (err) =>
+      toast.error(err instanceof ApiError ? err.message : "Алдаа гарлаа"),
   });
 
   if (isLoading) {

@@ -139,7 +139,7 @@ export function SiteHeader() {
                       <div className="my-2 h-px bg-border" />
                       {[
                         { href: "/bookings", label: "Миний захиалга" },
-                        { href: "/dashboard/cars", label: "Миний машинууд" },
+                        { href: "/dashboard/cars", label: "Миний гараж" },
                         { href: "/dashboard/bookings", label: "Ирсэн хүсэлтүүд" },
                         { href: "/profile", label: "Профайл" },
                         ...(user.isAdmin
