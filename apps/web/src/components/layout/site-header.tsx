@@ -83,13 +83,13 @@ export function SiteHeader() {
                 <>
                   <Link
                     href="/login"
-                    className="rounded-full px-4 py-2 text-sm font-medium text-foreground/75 transition-colors hover:bg-foreground/[0.07] hover:text-foreground dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+                    className="hidden rounded-full px-4 py-2 text-sm font-medium text-foreground/75 transition-colors hover:bg-foreground/[0.07] hover:text-foreground sm:block dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
                   >
                     Нэвтрэх
                   </Link>
                   <Link
                     href="/register"
-                    className="rounded-full bg-brand px-5 py-2 text-sm font-semibold text-brand-foreground shadow-sm shadow-brand/20 transition-all hover:brightness-105 active:scale-[0.98]"
+                    className="whitespace-nowrap rounded-full bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground shadow-sm shadow-brand/20 transition-all hover:brightness-105 active:scale-[0.98] sm:px-5"
                   >
                     Бүртгүүлэх
                   </Link>
