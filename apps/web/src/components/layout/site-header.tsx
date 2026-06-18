@@ -94,21 +94,18 @@ export function SiteHeader() {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="rounded-full text-foreground/70 hover:bg-foreground/[0.06] hover:text-foreground dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+                  <Link
+                    href="/login"
+                    className="rounded-full px-4 py-2 text-sm font-medium text-foreground/75 transition-colors hover:bg-foreground/[0.07] hover:text-foreground dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
                   >
-                    <Link href="/login">Нэвтрэх</Link>
-                  </Button>
-                  <Button
-                    size="sm"
-                    asChild
-                    className="rounded-full bg-brand px-5 text-brand-foreground shadow-lg shadow-brand/25 hover:brightness-105"
+                    Нэвтрэх
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="rounded-full bg-brand px-5 py-2 text-sm font-semibold text-brand-foreground shadow-sm shadow-brand/20 transition-all hover:brightness-105 active:scale-[0.98]"
                   >
-                    <Link href="/register">Бүртгүүлэх</Link>
-                  </Button>
+                    Бүртгүүлэх
+                  </Link>
                 </>
               )}
             </div>
