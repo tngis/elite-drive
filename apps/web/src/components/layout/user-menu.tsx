@@ -14,17 +14,15 @@ export function UserMenu() {
     <Link
       href="/profile"
       aria-label="Профайл"
-      className="flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] py-1 pl-1 pr-3 text-foreground backdrop-blur transition-colors hover:bg-foreground/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+      title={user.name}
+      className="rounded-full transition-opacity hover:opacity-90"
     >
-      <Avatar className="size-7">
+      <Avatar className="size-10">
         {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
-        <AvatarFallback className="bg-gradient-to-br from-brand to-orange-600 text-xs font-semibold text-white">
+        <AvatarFallback className="bg-gradient-to-br from-brand to-orange-600 text-sm font-semibold text-white">
           {user.name.slice(0, 1).toUpperCase()}
         </AvatarFallback>
       </Avatar>
-      <span className="max-w-[120px] truncate text-sm font-medium">
-        {user.name}
-      </span>
     </Link>
   );
 }
